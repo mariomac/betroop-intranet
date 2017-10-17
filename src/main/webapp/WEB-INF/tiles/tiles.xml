@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ This code is distributed under a BEER-WARE license.
+
+ Mario Macias Lloret wrote this file. Considering this, you can do what you
+ want with it: modify it, redistribute it, sell it, etc... But you will always
+ have to credit me as an author in the code.
+
+ In addition, if we meet someday and you think this code has been useful for
+ you, you MUST pay me a beer (a good one, if possible) as a reward for my
+ contribution.
+-->
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <!-- TODO: probar a poner solo el nombre del archivo (sin extensión) -->
+    <definition name="baseLayout" template="/WEB-INF/tiles/layout/basic.jsp">
+        <put-attribute name="title" value="Template" cascade="true"/>
+        <put-attribute name="header" value="/WEB-INF/tiles/view/header.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/tiles/view/footer.jsp"/>
+    </definition>
+
+    <definition name="events" extends="baseLayout">
+        <put-attribute name="title" value="Gestión de eventos" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/tiles/view/content/events.jsp"/>
+    </definition>
+
+    <definition name="users" extends="baseLayout">
+        <put-attribute name="title" value="Gestión de usuarios" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/tiles/view/content/users.jsp"/>
+    </definition>
+
+    <definition name="meetings" extends="baseLayout">
+        <put-attribute name="title" value="Gestión de Meetings de bar" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/tiles/view/content/meetings.jsp"/>
+    </definition>
+</tiles-definitions>

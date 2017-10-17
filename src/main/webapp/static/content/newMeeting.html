@@ -1,0 +1,120 @@
+<!--
+This code is distributed under a BEER-WARE license.
+
+Mario Macias Lloret wrote this file. Considering this, you can do what you
+want with it: modify it, redistribute it, sell it, etc... But you will always
+have to credit me as an author in the code.
+
+In addition, if we meet someday and you think this code has been useful for
+you, you MUST pay me a beer (a good one, if possible) as a reward for my
+contribution.
+-->
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title">Nuevo meeting en Bar</h3>
+        <div ng-show="!errorMessage" class="text-info">
+            Busca eventos y anfitriones en sus respectivas cajas de búsqueda. Se crearán quedadas para
+            todos los eventos, para cada uno de los anfitriones (#eventos x #anfitriones).
+        </div>
+        <div ng-show="errorMessage" class="text-danger">
+            {{errorMessage}}
+        </div>
+    </div>
+    <div class="modal-body ng-scope">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="eventName">Eventos</label>
+                    <input id="eventName" class="form-control" ng-model="searchEvent" placeholder="Busca aquí eventos por nombre"
+                           ng-change="updateEvents()"
+                           uib-typeahead="event.name + ' (' + showDate(event.eventTime) + ')'  for event in searchedEvents"
+                           typeahead-on-select="onEventSelect($item, $model, $label)"/>
+                    <div class="multientry">
+                        <div class="row-fluid" ng-repeat="e in meeting.events">
+                            <div data-ng-click="deleteEvent(e);" class="pull-right multiEntryClose glyphicon glyphicon-remove clickable"></div>
+                            <div class="multientryName">{{e.name}}</div>
+                            <div class="multientrySecondary">{{showDate(e.eventTime)}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="barName">Bares</label>
+                    <input id="barName" class="form-control" ng-model="searchBar" placeholder="Busca aquí bares por nombre"
+                           ng-change="updateBars()"
+                           uib-typeahead="bar.name for bar in searchedBars"
+                           typeahead-on-select="onBarSelect($item, $model, $label)"/>
+                    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                    <div ng-show="noResults">
+                        <i class="glyphicon glyphicon-remove"></i> No Results Found
+                    </div>
+                    <div class="multientry">
+                        <div class="row" ng-repeat="o in meeting.owners">
+                            <div class="col-sm-12">
+                                <div data-ng-click="deleteBar(o);" class="pull-right multiEntryClose glyphicon glyphicon-remove clickable"></div>
+                                <div class="multientryName">{{o.name}}</div>
+                                <div class="multientrySecondary">{{o.description}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="name">Nombre quedada</label>
+                    <input class="form-control" id="name" placeholder="Nombre" data-ng-model="meeting.name"/>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción</label>
+                    <textarea class="form-control" id="description" style="min-height: 70px"
+                              placeholder="Descripción extra sobre la quedada"
+                              data-ng-model="meeting.description"
+                    ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="team">Equipo Anfitrión</label>
+                    <input  class="form-control" id="team" data-ng-model="meeting.team"/>
+                </div>
+                <div class="form-group">
+                    <label for="numAsistentes">Núm. asistentes</label>
+                    <input  class="form-control-static" type="number" id="numAsistentes" data-ng-model="meeting.numAsistentes"/>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" data-ng-model="meeting.active"> Activo
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="startBefore">Empieza</label>
+                    <input type="number" id="startBefore" size="3"  class="form-control-static" data-ng-model="meeting.startBefore"/>
+                    <span>minutos antes</span>
+                </div>
+                <div class="form-group">
+                    <label for="endAfter">Acaba</label>
+                    <input type="number" id="endAfter" size="3" class="form-control-static" data-ng-model="meeting.endAfter"/>
+                    <span>minutos después de empezar</span>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" data-ng-model="meeting.alcohol"> Alcohol
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" data-ng-model="meeting.smoke"> Fumar
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="tags">Etiquetas</label>
+                    <input  class="form-control" id="tags" data-ng-model="meeting.tag"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer ng-style">
+        <button type="submit" class="btn btn-danger" data-ng-click="ok()">Guardar</button>
+        <button type="cancel" class="btn btn-default" data-ng-click="cancel()">Cancelar</button>
+    </div>
+</div>

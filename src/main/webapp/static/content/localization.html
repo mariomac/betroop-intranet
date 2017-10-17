@@ -1,0 +1,110 @@
+<!--
+This code is distributed under a BEER-WARE license.
+
+Mario Macias Lloret wrote this file. Considering this, you can do what you
+want with it: modify it, redistribute it, sell it, etc... But you will always
+have to credit me as an author in the code.
+
+In addition, if we meet someday and you think this code has been useful for
+you, you MUST pay me a beer (a good one, if possible) as a reward for my
+contribution.
+-->
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title">Localización</h3>
+        <p class="text-info">La marca de localización está fija en el centro.
+            Arrastra el mapa hasta que la marca esté sobre el lugar que quieres señalar.
+        </p>
+    </div>
+    <div class="modal-body ng-scope">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <label for="street">Calle</label>
+                        <input class="form-control" id="street" data-ng-model="meeting.extra.location.street"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <label for="city">Ciudad</label>
+                        <input class="form-control" id="city" data-ng-model="meeting.extra.location.city"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <label for="postalCode">C.P.</label>
+                        <input class="form-control" id="postalCode" data-ng-model="meeting.extra.location.postalCode"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <label for="country">País</label>
+                        <input class="form-control" id="country" data-ng-model="meeting.extra.location.country"/>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-sm-12">
+                        <button class="btn-warning" onclick="updatePacInput()">Actualizar mapa según dirección</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-12 ">
+                        <input id="pac-input" type="text" style="visibility: hidden"/>
+                        <div style="width: 100%; height: 300px;" id="map"></div>
+                        <script type="text/javascript">
+                            var map;
+                            function updatePacInput() {
+                                var input = document.getElementById('pac-input');
+                                input.value = document.getElementById('street').value + " "
+                                        + document.getElementById('city').value;
+                                console.log(input.value);
+                                var searchBox = new google.maps.places.PlacesService(input);
+                                //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                                searchBox.textSearch({query: input.value}, function (places) {
+                                    if (places.length > 0) {
+                                        map.panTo({
+                                            lat: places[0].geometry.location.lat(),
+                                            lng: places[0].geometry.location.lng(),
+                                            zoom: 15
+                                        });
+                                    }
+                                });
+                            }
+                            function initMap() {
+                                var $scope = angular.element(document.getElementById("map")).scope();
+                                var latLong = {
+                                    lat: $scope.meeting.latitude,
+                                    lng: $scope.meeting.longitude
+                                };
+                                map = new google.maps.Map(document.getElementById('map'), {
+                                    center: latLong,
+                                    zoom: 15
+                                });
+                                var marker = new google.maps.Marker({
+                                    position: latLong,
+                                    map: map,
+                                    title: 'Click to zoom'
+                                });
+                                map.addListener('center_changed', function () {
+                                    marker.setPosition(map.center);
+                                    $scope.meeting.latitude = map.center.lat();
+                                    $scope.meeting.longitude = map.center.lng();
+                                });
+                            }
+                        </script>
+                        <script async defer
+                                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr7GuTQdVPDKWAxRcmWIICiP3VrUiV0Bc&libraries=places&callback=initMap">
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer ng-style">
+            <button type="submit" class="btn btn-danger" data-ng-click="ok()">Guardar</button>
+            <button type="cancel" class="btn btn-default" data-ng-click="cancel()">Cancelar</button>
+        </div>
+    </div>

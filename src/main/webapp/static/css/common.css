@@ -1,0 +1,68 @@
+.eventPhotoThumb{
+    margin: 0px;
+    padding: 0px;
+    height: 32px;
+    width: 42px;
+    max-height: 32px;
+    max-width: 42px;
+}
+.eventPhotoThumb img {
+    height: 100%;
+    width: auto;
+}
+.userPhotoThumb img {
+    max-width: 240px;
+    max-height: 240px;
+}
+.clickable {
+    cursor: pointer;
+}
+
+.multientry {
+    max-height: 100px;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.multiEntryClose {
+    font-weight: 200;
+    font-size: 18px;
+    color: red;
+    margin: 2px;
+}
+
+.multientryName {
+    font-size: 12px;
+    font-weight: bold;
+}
+.multientrySecondary {
+    font-size: 10px;
+    max-height: 12px;
+    overflow: hidden;
+}
+
+.typeahead .custom-popup-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    background-color: #f9f9f9;
+}
+
+.typeahead .custom-popup-wrapper > .message {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    color: #868686;
+}
+
+.typeahead .custom-popup-wrapper > .dropdown-menu {
+    position: static;
+    float: none;
+    display: block;
+    min-width: 160px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}

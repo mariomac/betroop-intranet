@@ -1,0 +1,19 @@
+Start:
+
+docker run --name wmdb \
+    -p 3306:3306 \
+    -e 'MYSQL_ROOT_PASSWORD=test' \
+    -e 'MYSQL_DATABASE=wmdb' \
+    -d mysql:latest
+
+Load DB backup:
+
+docker run -it --link wmdb:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+
+(Then copy and paste the SQL)
+
+CREATE USER betroop;
+
+SET PASSWORD FOR betroop = 'test';
+
+GRANT ALL PRIVILEGES ON wmdb.* TO 'betroop'@'%' WITH GRANT OPTION;
